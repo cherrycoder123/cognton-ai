@@ -1,0 +1,11 @@
+# Core dependencies for Solar Farm OT Security Watchman
+pymodbus>=3.8.0
+scikit-learn>=1.5.0
+numpy>=1.26.0
+pandas>=2.2.0
+reportlab>=4.2.0
+matplotlib>=3.9.0
+streamlit>=1.40.0
+requests>=2.32.0
+pydantic>=2.10.0
+rich>=13.9.0

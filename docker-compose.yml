@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  solar-watchman:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cognton-solar-watchman
+    ports:
+      - "8501:8501"   # Central OT Security Operations Streamlit Dashboard
+      - "5021:5021"   # Inverter 01 Modbus TCP
+      - "5022:5022"   # Inverter 02 Modbus TCP
+      - "5023:5023"   # Inverter 03 Modbus TCP
+      - "5024:5024"   # Substation RTU/PLC Modbus TCP
+      - "2404:2404"   # IEC 60870-5-104 Telecontrol Gateway
+    environment:
+      - PYTHONUNBUFFERED=1
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_ENABLE_CORS=false
+    volumes:
+      - ./report:/app/report
+      - ./data:/app/data
+    restart: unless-stopped
+
+  b2-target-tester:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cognton-b2-tester
+    command: ["python", "tests/test_b2_targets.py"]
+    depends_on:
+      - solar-watchman
+    profiles:
+      - test
